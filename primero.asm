@@ -1,0 +1,3 @@
+		PROCESSOR 16887
+		ORG	0
+		END

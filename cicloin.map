@@ -1,0 +1,32 @@
+MPLINK 4.49, Linker
+Linker Map File - Created Fri Aug 09 22:51:31 2013
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x00000e
+                   .cinit    romdata   0x000007    program   0x000004
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000008      
+            9 out of 8455 program addresses used, program memory utilization is 0%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                    CICLO   0x000002    program     static C:\Users\trovana\Documents\nose\cicloi.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                    CICLO   0x000002    program     static C:\Users\trovana\Documents\nose\cicloi.asm
+
+

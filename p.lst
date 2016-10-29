@@ -1,0 +1,46 @@
+MPASM  5.51                             P.ASM   8-9-2013  13:46:01         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001                 PROCESSOR 16F887
+0000                  00002                 ORG 0
+  00000017            00003 CNT     EQU .23
+                      00004                 ;MOVLW .09
+                      00005                 ;MOVLW .10
+0000   0B97           00006 A               DECFSZ CNT,.1
+0001   2802           00007                 GOTO LOOP
+0002                  00008 CONTUNUE
+0002   3017           00009 LOOP    MOVLW CNT
+0003   2800           00010                 GOTO A
+                      00011                 END
+MPASM  5.51                             P.ASM   8-9-2013  13:46:01         PAGE  2
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+A                                 00000000
+CNT                               00000017
+CONTUNUE                          00000002
+LOOP                              00000002
+__16F887                          00000001
+__DEBUG                           1
+
+
+MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
+
+0000 : XXXX------------ ---------------- ---------------- ----------------
+
+All other memory blocks unused.
+
+Program Memory Words Used:     4
+Program Memory Words Free:  8188
+
+
+Errors   :     0
+Warnings :     0 reported,     0 suppressed
+Messages :     0 reported,     0 suppressed
+
+

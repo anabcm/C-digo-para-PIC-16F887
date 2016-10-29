@@ -1,0 +1,72 @@
+MPLINK 4.49, Linker
+Linker Map File - Created Fri Aug 16 00:52:07 2013
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000000
+                   .org_1       code   0x000000    program   0x000002
+                   .org_2       code   0x000005    program   0x0000f0
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000000      
+                            0x000005    0x00007c      
+            121 out of 8454 program addresses used, program memory utilization is 1%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                CENTENAS1   0x00005a    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                    CICLO   0x000033    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                  COMANDO   0x000025    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                 DECENAS1   0x000061    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                   DELAY1   0x00006f    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                   DELAY2   0x000074    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                    ENVIA   0x000022    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                ERASE_LCD   0x00002b    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                   ESPERA   0x000035    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                   INICIO   0x000005    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                     Loop   0x000071    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                    Loop1   0x000076    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                    Loop2   0x000078    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+              OBTEN_ASCII   0x00006a    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+               PRINT_TEMP   0x000039    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                READ_TEMP   0x000054    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                    START   0x000014    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                START_ADC   0x000031    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                START_LCD   0x000016    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                UNIDADES1   0x000068    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                   INICIO   0x000005    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                    START   0x000014    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                START_LCD   0x000016    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                    ENVIA   0x000022    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                  COMANDO   0x000025    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                ERASE_LCD   0x00002b    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                START_ADC   0x000031    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                    CICLO   0x000033    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                   ESPERA   0x000035    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+               PRINT_TEMP   0x000039    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                READ_TEMP   0x000054    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                CENTENAS1   0x00005a    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                 DECENAS1   0x000061    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                UNIDADES1   0x000068    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+              OBTEN_ASCII   0x00006a    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                   DELAY1   0x00006f    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                     Loop   0x000071    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                   DELAY2   0x000074    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                    Loop1   0x000076    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+                    Loop2   0x000078    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\sensorLM35.asm
+
+

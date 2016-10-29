@@ -1,0 +1,49 @@
+MPLINK 4.49, Linker
+Linker Map File - Created Sat Oct 05 00:25:11 2013
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000000
+                   .org_1       code   0x000000    program   0x000002
+                   .org_2       code   0x000004    program   0x00005a
+   .config_2007_TIM_INT.O       code   0x002007    program   0x000002
+   .config_2008_TIM_INT.O       code   0x002008    program   0x000002
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000000      
+                            0x000004    0x000030      
+                            0x002007    0x002008      
+            48 out of 8455 program addresses used, program memory utilization is 0%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                    CICLO   0x000013    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\tim_int.asm
+                   INICIO   0x000005    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\tim_int.asm
+         INTERRUPTION_TMR   0x000021    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\tim_int.asm
+               RESPALDO_1   0x000018    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\tim_int.asm
+               RESPALDO_2   0x00001c    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\tim_int.asm
+                       SI   0x000029    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\tim_int.asm
+                     SINO   0x00002e    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\tim_int.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                   INICIO   0x000005    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\tim_int.asm
+                    CICLO   0x000013    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\tim_int.asm
+               RESPALDO_1   0x000018    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\tim_int.asm
+               RESPALDO_2   0x00001c    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\tim_int.asm
+         INTERRUPTION_TMR   0x000021    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\tim_int.asm
+                       SI   0x000029    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\tim_int.asm
+                     SINO   0x00002e    program     static C:\Users\trovana\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\tim_int.asm
+
+

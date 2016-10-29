@@ -1,0 +1,46 @@
+MPLINK 4.49, Linker
+Linker Map File - Created Wed Sep 25 19:35:59 2013
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000000
+                   .org_1       code   0x000000    program   0x000002
+                   .org_2       code   0x000004    program   0x000086
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000000      
+                            0x000004    0x000046      
+            68 out of 8455 program addresses used, program memory utilization is 0%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                    CICLO   0x000022    program     static C:\Users\Ana Bertha\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\ADC_TODOS.asm
+                   INICIO   0x000005    program     static C:\Users\Ana Bertha\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\ADC_TODOS.asm
+                INTANALOG   0x000033    program     static C:\Users\Ana Bertha\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\ADC_TODOS.asm
+                 INTERRUP   0x000024    program     static C:\Users\Ana Bertha\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\ADC_TODOS.asm
+                 INTTIMER   0x00002b    program     static C:\Users\Ana Bertha\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\ADC_TODOS.asm
+              RECUPERANDO   0x000042    program     static C:\Users\Ana Bertha\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\ADC_TODOS.asm
+                 RESPALDO   0x00003e    program     static C:\Users\Ana Bertha\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\ADC_TODOS.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                   INICIO   0x000005    program     static C:\Users\Ana Bertha\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\ADC_TODOS.asm
+                    CICLO   0x000022    program     static C:\Users\Ana Bertha\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\ADC_TODOS.asm
+                 INTERRUP   0x000024    program     static C:\Users\Ana Bertha\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\ADC_TODOS.asm
+                 INTTIMER   0x00002b    program     static C:\Users\Ana Bertha\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\ADC_TODOS.asm
+                INTANALOG   0x000033    program     static C:\Users\Ana Bertha\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\ADC_TODOS.asm
+                 RESPALDO   0x00003e    program     static C:\Users\Ana Bertha\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\ADC_TODOS.asm
+              RECUPERANDO   0x000042    program     static C:\Users\Ana Bertha\Dropbox\Maestría en Ciencias de la Computación\Semestre 1\Sistemas de Computo\proyectos_sistemasdecomputo\ADC_TODOS.asm
+
+

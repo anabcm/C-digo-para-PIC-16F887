@@ -1,0 +1,693 @@
+MPASM  5.51                    SENSORLM35.ASM   8-16-2013  0:52:04         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 ;///////// www.openboxer.260mb.com ////////////
+                      00002 ;//                               JUNIO-2009 //
+                      00003 ;//  PROGRAMA : sensorLM35.asm               //
+                      00004 ;//  Función: A través de un Display LCD16x2 //
+                      00005 ;//  y el sensor de temperatura LM35,        //
+                      00006 ;//  muestrar la temperatura obtenida        //
+                      00007 ;//  (0° <= T >= 100° C).                    //
+                      00008 ;//                                          //
+                      00009 ;//  PORTA                                   //
+                      00010 ;//  ENTRADA: CANAL 0  -  Conv. A/D          //
+                      00011 ;//   -------------------------------        //
+                      00012 ;//  | - | - | - | - | - | - | - | 0 |       //
+                      00013 ;//   -------------------------------        //
+                      00014 ;//                                          //
+                      00015 ;//  PORTB                                   //
+                      00016 ;//  SALIDA: Resultado contenido en ADRESH   //
+                      00017 ;//   -------------------------------        //
+                      00018 ;//  | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |       //
+                      00019 ;//   -------------------------------        //
+                      00020 ;//  Puertos para utilizar LCD16x2           //
+                      00021 ;//  PORTD                                   //
+                      00022 ;//  SALIDAS: Evío de DATOS E INSTRUCCIONES. //
+                      00023 ;//   -------------------------------        //
+                      00024 ;//  | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |       //
+                      00025 ;//   -------------------------------        //
+                      00026 ;//                                          //
+                      00027 ;//  PORTC                                   //
+                      00028 ;//  SALIDAS                                 //
+                      00029 ;//  BIT 0:[RS] MODO DATO=1/INSTRUCCION=0    //
+                      00030 ;//  BIT 1:[ENABLE] ACTIVADO=1/DESC.=0       //
+                      00031 ;//   -------------------------------        //
+                      00032 ;//  | - | - | - | - | - | - | 1 | 0 |       //
+                      00033 ;//   -------------------------------        //
+                      00034 ;//                                          //
+                      00035 ;///////// www.openboxer.260mb.com ////////////
+                      00036 
+                      00037   processor 16f877
+                      00038   include<p16f877.inc>
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ;  MPASM PIC16F877 processor include
+                      00005 ; 
+                      00006 ;  (c) Copyright 1999-2013 Microchip Technology, All rights reserved
+                      00007 ;==========================================================================
+                      00008 
+Message[301]: MESSAGE: (Processor-header file mismatch.  Verify selected processor.)
+                      00540         LIST
+                      00039 
+                      00040   ;Variable para el DELAY del ADC
+  00000020            00041 val equ h'20'
+                      00042 
+                      00043   ;Variables para el DELAY del ENABLE LCD
+MPASM  5.51                    SENSORLM35.ASM   8-16-2013  0:52:04         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+  00000030            00044 val2 equ 0x30
+  00000031            00045 val1 equ 0x31
+                      00046 
+                      00047   ;Variables para separar el resultado de ADC
+                      00048   ; en valor BCD
+  00000032            00049 Unidades equ 0x32     
+  00000033            00050 Decenas equ 0x33        
+  00000034            00051 Centenas equ 0x34   
+  00000035            00052 Resto equ 0x35
+                      00053 
+0000                  00054   org 0h
+0000   2805           00055   goto INICIO
+0005                  00056   org 05h
+                      00057 
+0005                  00058 INICIO:
+0005   0185           00059       clrf PORTA        ;Limpia el puerto A
+0006   0186           00060       clrf PORTB        ;Limpia el puerto B
+0007   0187           00061       clrf PORTC            ;Limpia el puerto C 
+0008   0188           00062           clrf PORTD            ;Limpia el puerto D
+0009   1683           00063       bsf STATUS,RP0    
+000A   1303           00064       bcf STATUS,RP1    ;Cambio la banco 1
+                      00065       ;Configuración de puertos C-D para el LCD
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+000B   0187           00066       clrf TRISC        ;Configura PORTC como salida
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+000C   0188           00067           clrf TRISD        ;Configura PORTD como salida
+                      00068       ;Configuración del puerto A para ADC
+000D   3000           00069       movlw 00h         
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+000E   009F           00070       movwf ADCON1      ;Configura puerto A y E como analógicos
+000F   303F           00071       movlw 3fh         
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0010   0085           00072       movwf TRISA       ;Configura el puerto A como entrada
+0011   3000           00073       movlw h'0'
+                      00074       ;Configuración del puerto B para mostrar el resultado ADC
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0012   0086           00075       movwf TRISB       ;Configura puerto B como salida
+0013   1283           00076       bcf STATUS,RP0    ;Regresa al banco 0
+                      00077       ;Inicio del programa
+0014                  00078 START
+0014   2016           00079       call START_LCD   ;Inicializa LCD
+0015   2831           00080       goto START_ADC   ;Comienza la lectura del Conv. A/D
+                      00081       ;Inicia LCD
+0016                  00082 START_LCD:
+0016   1007           00083       bcf PORTC,0      ; RS=0 MODO INSTRUCCION
+0017   3001           00084       movlw 0x01           ; El comando 0x01 limpia la pantalla en el LCD
+0018   0088           00085           movwf PORTD
+0019   2025           00086           call COMANDO     ; Se da de alta el comando
+001A   300C           00087           movlw 0x0C       ; Selecciona la primera línea
+001B   0088           00088           movwf PORTD
+001C   2025           00089           call COMANDO     ; Se da de alta el comando
+001D   303C           00090           movlw 0x3C       ; Se configura el cursor
+001E   0088           00091           movwf PORTD
+MPASM  5.51                    SENSORLM35.ASM   8-16-2013  0:52:04         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+001F   2025           00092           call COMANDO     ; Se da de alta el comando
+0020   1407           00093           bsf PORTC, 0     ; Rs=1 MODO DATO
+0021   0008           00094       return
+                      00095       ;Rutina para enviar un dato
+0022                  00096 ENVIA:
+0022   1407           00097           bsf PORTC, 0    ; RS=1 MODO DATO
+0023   2025           00098           call COMANDO    ; Se da de alta el comando
+0024   0008           00099           return  
+                      00100      ;Rutina para enviar comandos
+0025                  00101 COMANDO:
+0025   1487           00102       bsf PORTC, 1         ; Pone la señal ENABLE en 1
+0026   2074           00103       call DELAY2      ; Tiempo de espera
+0027   2074           00104       call DELAY2
+0028   1087           00105       bcf PORTC, 1     ; ENABLE=0       
+0029   2074           00106           call DELAY2
+002A   0008           00107           return     
+                      00108       ;Rutina para limpar pantalla LCD  
+002B                  00109 ERASE_LCD
+002B   1007           00110       bcf PORTC,0      ; RS=0 MODO INSTRUCCION
+002C   3001           00111       movlw 0x01           ; El comando 0x01 limpia la pantalla en el LCD
+002D   0088           00112           movwf PORTD
+002E   2025           00113           call COMANDO     ; Se da de alta el comando
+002F   1407           00114       bsf PORTC, 0     ; Rs=1 MODO DATO
+0030   0008           00115       return
+                      00116       ;Configuración Convertidor A/D
+0031                  00117 START_ADC
+0031   30C1           00118       movlw b'11000001' ;Configuración ADCON0 
+0032   009F           00119       movwf ADCON0      ;ADCS1=1 ADCS0=1 CHS2=0 CHS1=0 CHS0= GO/DONE=0 - ADON=1
+                      00120 
+0033   151F           00121 CICLO: bsf ADCON0,2      ;Conversión en progreso GO=1
+0034   206F           00122        call DELAY1       ;Espera que termine la conversión
+0035   191F           00123 ESPERA btfsc ADCON0,2    ;Pregunta por DONE=0? (Terminó conversión)
+0036   2835           00124        goto ESPERA       ;No, vuelve a preguntar
+0037   081E           00125        movf ADRESH,0     ;Si
+0038   0086           00126        movwf PORTB       ;Muestra el resultado en PORTB
+                      00127        ;Rutina que muestra temperatura
+0039                  00128 PRINT_TEMP
+0039   202B           00129        call ERASE_LCD    ;Limpia LCD
+003A   3054           00130        movlw 'T'
+003B   0088           00131            movwf PORTD
+003C   2022           00132            call ENVIA
+003D   303D           00133        movlw '='
+003E   0088           00134            movwf PORTD
+003F   2022           00135            call ENVIA
+                      00136 
+0040   2054           00137        call READ_TEMP    ;Llamada a rutina que obtine el 
+                      00138                          ;valor de la temperatura a partir
+                      00139                          ;del  resultado del Conv a/D
+                      00140 
+0041   0834           00141        movf Centenas,W   ;Imprime el dígito de las centenas
+0042   0088           00142        movwf PORTD
+0043   2022           00143        call ENVIA
+0044   0833           00144        movf Decenas,W    ;Imprime el dígito de las decenas
+MPASM  5.51                    SENSORLM35.ASM   8-16-2013  0:52:04         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0045   0088           00145        movwf PORTD
+0046   2022           00146        call ENVIA
+0047   0832           00147        movf Unidades,W   ;Imprime el dígito de las unidades
+0048   0088           00148        movwf PORTD
+0049   2022           00149        call ENVIA
+004A   3020           00150        movlw ' '
+004B   0088           00151            movwf PORTD
+004C   2022           00152            call ENVIA
+004D   30DF           00153        movlw h'DF'       ;Imprime el simbolo "°"
+004E   0088           00154            movwf PORTD
+004F   2022           00155            call ENVIA 
+0050   3043           00156        movlw 'C'
+0051   0088           00157            movwf PORTD
+0052   2022           00158            call ENVIA 
+                      00159 
+0053   2833           00160        goto CICLO        ;Repite el ciclo de lectura ADC
+                      00161 
+                      00162        ;Rutina que obtine el valor de la temperatura
+                      00163        ;a partir del  resultado del Conv a/D
+0054                  00164 READ_TEMP:
+0054   01B4           00165        clrf Centenas
+0055   01B3           00166        clrf Decenas
+0056   01B2           00167        clrf Unidades
+                      00168       
+0057   081E           00169        movf ADRESH,W   
+0058   071E           00170        addwf ADRESH,W     ;Dupilca el valor de ADRESH para 
+                      00171        ;obtener un valor de temperatura real aprox
+0059   00B5           00172        movwf Resto        ;Guarda el valor de ADRESH en Resto   
+                      00173        ;Comienza el proceso de otención de valores BCD 
+                      00174        ;para Centenas, Decenas y unidades atraves de restas
+                      00175        ;sucesivas.
+005A                  00176 CENTENAS1
+005A   3064           00177        movlw d'100'      ;W=d'100'
+005B   0235           00178        subwf Resto,W     ;Resto - d'100' (W)
+005C   1C03           00179        btfss STATUS,C    ;Resto menor que d'100'?
+005D   2861           00180        goto DECENAS1     ;SI
+005E   00B5           00181        movwf Resto       ;NO, Salva el resto
+005F   0AB4           00182        incf Centenas,1   ;Incrementa el contador de centenas BCD
+0060   285A           00183        goto CENTENAS1    ;Realiza otra resta
+0061                  00184 DECENAS1
+0061   300A           00185        movlw d'10'       ;W=d'10'
+0062   0235           00186        subwf Resto,W     ;Resto - d'10' (W)
+0063   1C03           00187        btfss STATUS,C    ;Resto menor que d'10'?
+0064   2868           00188        goto UNIDADES1    ;Si
+0065   00B5           00189        movwf Resto       ;No, Salva el resto
+0066   0AB3           00190        incf Decenas,1    ;Incrementa el contador de centenas BCD
+0067   2861           00191        goto DECENAS1     ;Realiza otra resta
+0068                  00192 UNIDADES1
+0068   0835           00193        movf Resto,W      ;El resto son la Unidades BCD
+0069   00B2           00194        movwf Unidades
+                      00195        ;clrf Resto
+                      00196        ;Rutina que obtiene el equivalente en ASCII
+006A                  00197 OBTEN_ASCII
+MPASM  5.51                    SENSORLM35.ASM   8-16-2013  0:52:04         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+006A   3030           00198        movlw h'30' 
+006B   04B2           00199        iorwf Unidades,f      
+006C   04B3           00200        iorwf Decenas,f
+006D   04B4           00201        iorwf Centenas,f      
+006E   0008           00202        return
+                      00203 
+                      00204 
+                      00205 ;Rutina que genera un Delay de 20 microSeg aprox.
+                      00206 ;para el Conv. A/D
+006F                  00207 DELAY1:             
+006F   3030           00208        movlw h'30'
+0070   00A0           00209        movwf val
+0071   0BA0           00210 Loop   decfsz val,1
+0072   2871           00211        goto Loop
+0073   0008           00212        return
+                      00213 
+                      00214 ;Subrutina de retardo para ENABLE_LCD 
+0074                  00215 DELAY2:         
+0074   30FF           00216                 movlw 0xFF
+0075   00B1           00217         movwf val1 
+0076                  00218 Loop1:
+0076   30FF           00219         movlw 0xFF
+0077   00B0           00220                 movwf val2      
+0078                  00221 Loop2:
+0078   0BB0           00222                 decfsz val2,1
+0079   2878           00223                 goto Loop2
+007A   0BB1           00224                 decfsz val1,1
+007B   2876           00225                 goto Loop1
+007C   0008           00226         return
+                      00227      end
+MPASM  5.51                    SENSORLM35.ASM   8-16-2013  0:52:04         PAGE  6
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+ACKDT                             00000005
+ACKEN                             00000004
+ACKSTAT                           00000006
+ADCON0                            0000001F
+ADCON1                            0000009F
+ADCS0                             00000006
+ADCS1                             00000007
+ADDEN                             00000003
+ADFM                              00000007
+ADIE                              00000006
+ADIF                              00000006
+ADON                              00000000
+ADRESH                            0000001E
+ADRESL                            0000009E
+BCLIE                             00000003
+BCLIF                             00000003
+BF                                00000000
+BRGH                              00000002
+C                                 00000000
+CCP1CON                           00000017
+CCP1IE                            00000002
+CCP1IF                            00000002
+CCP1M0                            00000000
+CCP1M1                            00000001
+CCP1M2                            00000002
+CCP1M3                            00000003
+CCP1X                             00000005
+CCP1Y                             00000004
+CCP2CON                           0000001D
+CCP2IE                            00000000
+CCP2IF                            00000000
+CCP2M0                            00000000
+CCP2M1                            00000001
+CCP2M2                            00000002
+CCP2M3                            00000003
+CCP2X                             00000005
+CCP2Y                             00000004
+CCPR1                             00000015
+CCPR1H                            00000016
+CCPR1L                            00000015
+CCPR2                             0000001B
+CCPR2H                            0000001C
+CCPR2L                            0000001B
+CENTENAS1                         0000005A
+CHS0                              00000003
+CHS1                              00000004
+CHS2                              00000005
+CICLO                             00000033
+CKE                               00000006
+CKP                               00000004
+COMANDO                           00000025
+CREN                              00000004
+CSRC                              00000007
+MPASM  5.51                    SENSORLM35.ASM   8-16-2013  0:52:04         PAGE  7
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+Centenas                          00000034
+D                                 00000005
+DATA_ADDRESS                      00000005
+DC                                00000001
+DECENAS1                          00000061
+DELAY1                            0000006F
+DELAY2                            00000074
+D_A                               00000005
+D_NOT_A                           00000005
+Decenas                           00000033
+EEADR                             0000010D
+EEADRH                            0000010F
+EECON1                            0000018C
+EECON2                            0000018D
+EEDATA                            0000010C
+EEDATH                            0000010E
+EEIE                              00000004
+EEIF                              00000004
+EEPGD                             00000007
+ENVIA                             00000022
+ERASE_LCD                         0000002B
+ESPERA                            00000035
+F                                 00000001
+FERR                              00000002
+FSR                               00000004
+GCEN                              00000007
+GIE                               00000007
+GO                                00000002
+GO_DONE                           00000002
+GO_NOT_DONE                       00000002
+I2C_DATA                          00000005
+I2C_READ                          00000002
+I2C_START                         00000003
+I2C_STOP                          00000004
+IBF                               00000007
+IBOV                              00000005
+INDF                              00000000
+INICIO                            00000005
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+Loop                              00000071
+Loop1                             00000076
+Loop2                             00000078
+NOT_A                             00000005
+NOT_ADDRESS                       00000005
+NOT_BO                            00000000
+NOT_BOR                           00000000
+NOT_DONE                          00000002
+NOT_PD                            00000003
+NOT_POR                           00000001
+MPASM  5.51                    SENSORLM35.ASM   8-16-2013  0:52:04         PAGE  8
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+NOT_RBPU                          00000007
+NOT_RC8                           00000006
+NOT_T1SYNC                        00000002
+NOT_TO                            00000004
+NOT_TX8                           00000006
+NOT_W                             00000002
+NOT_WRITE                         00000002
+OBF                               00000006
+OBTEN_ASCII                       0000006A
+OERR                              00000001
+OPTION_REG                        00000081
+P                                 00000004
+PCFG0                             00000000
+PCFG1                             00000001
+PCFG2                             00000002
+PCFG3                             00000003
+PCL                               00000002
+PCLATH                            0000000A
+PCON                              0000008E
+PEIE                              00000006
+PEN                               00000002
+PIE1                              0000008C
+PIE2                              0000008D
+PIR1                              0000000C
+PIR2                              0000000D
+PORTA                             00000005
+PORTB                             00000006
+PORTC                             00000007
+PORTD                             00000008
+PORTE                             00000009
+PR2                               00000092
+PRINT_TEMP                        00000039
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+PSPIE                             00000007
+PSPIF                             00000007
+PSPMODE                           00000004
+R                                 00000002
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+RA4                               00000004
+RA5                               00000005
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+RB3                               00000003
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+MPASM  5.51                    SENSORLM35.ASM   8-16-2013  0:52:04         PAGE  9
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
+RC0                               00000000
+RC1                               00000001
+RC2                               00000002
+RC3                               00000003
+RC4                               00000004
+RC5                               00000005
+RC6                               00000006
+RC7                               00000007
+RC8_9                             00000006
+RC9                               00000006
+RCD8                              00000000
+RCEN                              00000003
+RCIE                              00000005
+RCIF                              00000005
+RCREG                             0000001A
+RCSTA                             00000018
+RD                                00000000
+RD0                               00000000
+RD1                               00000001
+RD2                               00000002
+RD3                               00000003
+RD4                               00000004
+RD5                               00000005
+RD6                               00000006
+RD7                               00000007
+RE0                               00000000
+RE1                               00000001
+RE2                               00000002
+READ_TEMP                         00000054
+READ_WRITE                        00000002
+RP0                               00000005
+RP1                               00000006
+RSEN                              00000001
+RX9                               00000006
+RX9D                              00000000
+R_NOT_W                           00000002
+R_W                               00000002
+Resto                             00000035
+S                                 00000003
+SEN                               00000000
+SMP                               00000007
+SPBRG                             00000099
+SPEN                              00000007
+SREN                              00000005
+SSPADD                            00000093
+SSPBUF                            00000013
+SSPCON                            00000014
+SSPCON2                           00000091
+SSPEN                             00000005
+SSPIE                             00000003
+MPASM  5.51                    SENSORLM35.ASM   8-16-2013  0:52:04         PAGE 10
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+SSPIF                             00000003
+SSPM0                             00000000
+SSPM1                             00000001
+SSPM2                             00000002
+SSPM3                             00000003
+SSPOV                             00000006
+SSPSTAT                           00000094
+START                             00000014
+START_ADC                         00000031
+START_LCD                         00000016
+STATUS                            00000003
+SYNC                              00000004
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+T1CKPS0                           00000004
+T1CKPS1                           00000005
+T1CON                             00000010
+T1INSYNC                          00000002
+T1OSCEN                           00000003
+T1SYNC                            00000002
+T2CKPS0                           00000000
+T2CKPS1                           00000001
+T2CON                             00000012
+TMR0                              00000001
+TMR0IE                            00000005
+TMR0IF                            00000002
+TMR1                              0000000E
+TMR1CS                            00000001
+TMR1H                             0000000F
+TMR1IE                            00000000
+TMR1IF                            00000000
+TMR1L                             0000000E
+TMR1ON                            00000000
+TMR2                              00000011
+TMR2IE                            00000001
+TMR2IF                            00000001
+TMR2ON                            00000002
+TOUTPS0                           00000003
+TOUTPS1                           00000004
+TOUTPS2                           00000005
+TOUTPS3                           00000006
+TRISA                             00000085
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA4                            00000004
+TRISA5                            00000005
+TRISB                             00000086
+TRISB0                            00000000
+TRISB1                            00000001
+MPASM  5.51                    SENSORLM35.ASM   8-16-2013  0:52:04         PAGE 11
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+TRISC                             00000087
+TRISC0                            00000000
+TRISC1                            00000001
+TRISC2                            00000002
+TRISC3                            00000003
+TRISC4                            00000004
+TRISC5                            00000005
+TRISC6                            00000006
+TRISC7                            00000007
+TRISD                             00000088
+TRISD0                            00000000
+TRISD1                            00000001
+TRISD2                            00000002
+TRISD3                            00000003
+TRISD4                            00000004
+TRISD5                            00000005
+TRISD6                            00000006
+TRISD7                            00000007
+TRISE                             00000089
+TRISE0                            00000000
+TRISE1                            00000001
+TRISE2                            00000002
+TRMT                              00000001
+TX8_9                             00000006
+TX9                               00000006
+TX9D                              00000000
+TXD8                              00000000
+TXEN                              00000005
+TXIE                              00000004
+TXIF                              00000004
+TXREG                             00000019
+TXSTA                             00000098
+UA                                00000001
+UNIDADES1                         00000068
+Unidades                          00000032
+W                                 00000000
+WCOL                              00000007
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+Z                                 00000002
+_BODEN_OFF                        00003FBF
+_BODEN_ON                         00003FFF
+_BOREN_OFF                        00003FBF
+_BOREN_ON                         00003FFF
+_CONFIG                           00002007
+_CPD_OFF                          00003FFF
+MPASM  5.51                    SENSORLM35.ASM   8-16-2013  0:52:04         PAGE 12
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_CPD_ON                           00003EFF
+_CP_ALL                           00000FCF
+_CP_HALF                          00001FDF
+_CP_OFF                           00003FFF
+_CP_UPPER_256                     00002FEF
+_DEBUG_OFF                        00003FFF
+_DEBUG_ON                         000037FF
+_DEVID1                           00002006
+_FOSC_EXTRC                       00003FFF
+_FOSC_HS                          00003FFE
+_FOSC_LP                          00003FFC
+_FOSC_XT                          00003FFD
+_HS_OSC                           00003FFE
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+_LP_OSC                           00003FFC
+_LVP_OFF                          00003F7F
+_LVP_ON                           00003FFF
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC                           00003FFF
+_WDTE_OFF                         00003FFB
+_WDTE_ON                          00003FFF
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+_WRT_ENABLE_OFF                   00003DFF
+_WRT_ENABLE_ON                    00003FFF
+_WRT_OFF                          00003DFF
+_WRT_ON                           00003FFF
+_XT_OSC                           00003FFD
+__16F877A                         00000001
+__DEBUG                           1
+val                               00000020
+val1                              00000031
+val2                              00000030
+
+
+MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
+
+0000 : X----XXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0040 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXX---
+
+All other memory blocks unused.
+
+Program Memory Words Used:   121
+Program Memory Words Free:  8071
+
+
+MPASM  5.51                    SENSORLM35.ASM   8-16-2013  0:52:04         PAGE 13
+
+
+
+
+
+Errors   :     0
+Warnings :     0 reported,     0 suppressed
+Messages :     6 reported,     0 suppressed
+
+
